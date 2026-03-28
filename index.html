@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Endless Arcade</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="game-root">
+
+<canvas id="bgCanvas"></canvas>
+<canvas id="gameCanvas"></canvas>
+<canvas id="fxCanvas"></canvas>
+
+<div id="ui">
+
+<!-- ================= HUD ================= -->
+<div id="hud">
+
+<div class="hud-block">
+<span>HP</span>
+<div class="bar"><div id="hpBar"></div></div>
+<span id="hpText"></span>
+</div>
+
+<div class="hud-block">
+<span>ENERGY</span>
+<div class="bar"><div id="enBar"></div></div>
+<span id="enText"></span>
+</div>
+
+<div class="hud-block">
+<span>XP</span>
+<div class="bar"><div id="xpBar"></div></div>
+<span id="xpText"></span>
+</div>
+
+<div class="hud-block">
+<span>LEVEL</span>
+<div id="levelText"></div>
+</div>
+
+<div class="hud-block">
+<span>SCORE</span>
+<div id="scoreText"></div>
+</div>
+
+<div class="hud-block">
+<span>TIME</span>
+<div id="timeText"></div>
+</div>
+
+</div>
+
+<!-- ================= MINIMAP ================= -->
+<canvas id="minimap"></canvas>
+
+<!-- ================= INVENTORY ================= -->
+<div id="inventoryPanel">
+<h3>INVENTORY</h3>
+<div id="inventoryGrid">
+
+<div class="slot" data-slot="0"></div>
+<div class="slot" data-slot="1"></div>
+<div class="slot" data-slot="2"></div>
+<div class="slot" data-slot="3"></div>
+<div class="slot" data-slot="4"></div>
+<div class="slot" data-slot="5"></div>
+<div class="slot" data-slot="6"></div>
+<div class="slot" data-slot="7"></div>
+<div class="slot" data-slot="8"></div>
+<div class="slot" data-slot="9"></div>
+
+<div class="slot" data-slot="10"></div>
+<div class="slot" data-slot="11"></div>
+<div class="slot" data-slot="12"></div>
+<div class="slot" data-slot="13"></div>
+<div class="slot" data-slot="14"></div>
+<div class="slot" data-slot="15"></div>
+<div class="slot" data-slot="16"></div>
+<div class="slot" data-slot="17"></div>
+<div class="slot" data-slot="18"></div>
+<div class="slot" data-slot="19"></div>
+
+<div class="slot" data-slot="20"></div>
+<div class="slot" data-slot="21"></div>
+<div class="slot" data-slot="22"></div>
+<div class="slot" data-slot="23"></div>
+<div class="slot" data-slot="24"></div>
+<div class="slot" data-slot="25"></div>
+<div class="slot" data-slot="26"></div>
+<div class="slot" data-slot="27"></div>
+<div class="slot" data-slot="28"></div>
+<div class="slot" data-slot="29"></div>
+
+</div>
+</div>
+
+<!-- ================= ABILITIES ================= -->
+<div id="abilityBar">
+
+<button class="ability" data-id="dash">Q</button>
+<button class="ability" data-id="pulse">E</button>
+<button class="ability" data-id="shield">R</button>
+<button class="ability" data-id="nova">F</button>
+<button class="ability" data-id="heal">C</button>
+<button class="ability" data-id="overdrive">V</button>
+
+</div>
+
+<!-- ================= QUESTS ================= -->
+<div id="questPanel">
+<h3>OBJECTIVES</h3>
+<ul id="questList"></ul>
+</div>
+
+<!-- ================= SKILLS ================= -->
+<div id="skillsPanel" class="hidden">
+<h2>SKILLS</h2>
+<div class="skillsGrid">
+
+<div class="skill" data-skill="speed"></div>
+<div class="skill" data-skill="damage"></div>
+<div class="skill" data-skill="regen"></div>
+<div class="skill" data-skill="energy"></div>
+<div class="skill" data-skill="crit"></div>
+<div class="skill" data-skill="lifesteal"></div>
+<div class="skill" data-skill="multishot"></div>
+<div class="skill" data-skill="explosion"></div>
+<div class="skill" data-skill="cooldown"></div>
+<div class="skill" data-skill="shield"></div>
+
+</div>
+<button id="closeSkills">CLOSE</button>
+</div>
+
+<!-- ================= SHOP ================= -->
+<div id="shopPanel" class="hidden">
+<h2>UPGRADES</h2>
+<div class="shopGrid">
+
+<div class="shopItem" data-item="hp"></div>
+<div class="shopItem" data-item="energy"></div>
+<div class="shopItem" data-item="damage"></div>
+<div class="shopItem" data-item="speed"></div>
+<div class="shopItem" data-item="crit"></div>
+<div class="shopItem" data-item="regen"></div>
+<div class="shopItem" data-item="cooldown"></div>
+<div class="shopItem" data-item="lifesteal"></div>
+
+</div>
+<button id="closeShop">CLOSE</button>
+</div>
+
+<!-- ================= MENU ================= -->
+<div id="menu" class="hidden">
+<div class="panel">
+
+<h1>PAUSED</h1>
+
+<button id="resumeBtn">RESUME</button>
+<button id="skillsBtn">SKILLS</button>
+<button id="shopBtn">UPGRADES</button>
+<button id="settingsBtn">SETTINGS</button>
+<button id="saveBtn">SAVE</button>
+<button id="loadBtn">LOAD</button>
+
+</div>
+</div>
+
+<!-- ================= SETTINGS ================= -->
+<div id="settingsPanel" class="hidden">
+<div class="panel">
+
+<h2>SETTINGS</h2>
+
+<label>MASTER VOLUME</label>
+<input type="range" id="volumeSlider" min="0" max="1" step="0.01">
+
+<label>MUSIC VOLUME</label>
+<input type="range" id="musicSlider" min="0" max="1" step="0.01">
+
+<label>SFX VOLUME</label>
+<input type="range" id="sfxSlider" min="0" max="1" step="0.01">
+
+<label>VISUAL SOFTNESS</label>
+<input type="range" id="softness" min="0" max="10">
+
+<label>SCREEN SHAKE</label>
+<input type="checkbox" id="shakeToggle" checked>
+
+<label>PARTICLES</label>
+<input type="checkbox" id="particleToggle" checked>
+
+<button id="closeSettings">BACK</button>
+
+</div>
+</div>
+
+<!-- ================= DIALOGUE ================= -->
+<div id="dialogueBox" class="hidden">
+<p id="dialogueText"></p>
+<button id="nextDialogue">NEXT</button>
+</div>
+
+<!-- ================= DAMAGE ================= -->
+<div id="damageLayer"></div>
+
+<!-- ================= NOTIFICATIONS ================= -->
+<div id="notificationLayer"></div>
+
+<!-- ================= TOOLTIP ================= -->
+<div id="tooltip"></div>
+
+<!-- ================= AUDIO SYSTEM ================= -->
+<audio id="bgMusic" loop></audio>
+<audio id="sfxShoot"></audio>
+<audio id="sfxHit"></audio>
+<audio id="sfxLevel"></audio>
+<audio id="sfxDeath"></audio>
+
+<!-- ================= GAME OVER ================= -->
+<div id="gameOver" class="hidden">
+<h1>GAME OVER</h1>
+<p id="finalStats"></p>
+<button id="restartBtn">RESTART</button>
+</div>
+
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
+<!-- ========= STRUCTURAL EXPANSION FOR FUTURE SYSTEMS ========= -->
+
+<div id="data-layer" style="display:none">
+
+<div id="enemy-types">
+
+<div data-type="basic"></div>
+<div data-type="fast"></div>
+<div data-type="tank"></div>
+<div data-type="ranged"></div>
+<div data-type="splitter"></div>
+<div data-type="boss"></div>
+
+</div>
+
+<div id="item-types">
+
+<div data-item="core"></div>
+<div data-item="weapon"></div>
+<div data-item="utility"></div>
+<div data-item="passive"></div>
+
+</div>
+
+<div id="wave-data">
+
+<div data-wave="1"></div>
+<div data-wave="2"></div>
+<div data-wave="3"></div>
+<div data-wave="4"></div>
+<div data-wave="5"></div>
+
+</div>
+
+</div>
+
+</body>
+</html>
